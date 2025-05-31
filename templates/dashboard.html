@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom - Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <form method="POST" action="/logout" style="display: inline;">
+                    <button type="submit" class="logout-btn">sign out</button>
+                </form>
+            </div>
+            
+            <div class="rooms-grid">
+                <div class="room-card create-new" onclick="showCreateModal()">
+                    <div class="plus">+</div>
+                </div>
+                
+                {{range .chatrooms}}
+                <div class="room-card" onclick="window.location.href='/room/{{.Code}}'">
+                    <div class="room-name">{{.Name}}</div>
+                    <div class="room-code">[{{.Code}}]</div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="user-info">
+                <div class="label">user</div>
+                <div class="username">{{.user.Username}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="tabs">
+                <div class="tab active">create chatroom</div>
+                <div class="tab" onclick="showJoinModal()">join chatroom</div>
+            </div>
+            <form id="createForm">
+                <input type="text" id="roomName" placeholder="room name" required>
+                <input type="password" id="roomPassword" placeholder="secret" required>
+                <button type="submit" class="btn">create</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Join Room Modal -->
+    <div id="joinModal" class="modal">
+        <div class="modal-content">
+            <div class="tabs">
+                <div class="tab" onclick="showCreateModal()">create chatroom</div>
+                <div class="tab active">join chatroom</div>
+            </div>
+            <form id="joinForm">
+                <input type="text" id="joinCode" placeholder="chatroom code" required>
+                <input type="password" id="joinPassword" placeholder="secret" required>
+                <button type="submit" class="btn">join</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

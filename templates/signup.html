@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom - Sign Up</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                <div class="tab" onclick="window.location.href='/login'">log in</div>
+                <div class="tab active">sign up</div>
+            </div>
+            
+            <div class="form-container">
+                <form method="POST" action="/signup">
+                    <div class="form-group">
+                        <label>sign up</label>
+                        <input type="text" name="username" placeholder="username" required>
+                        <input type="email" name="email" placeholder="email" required>
+                        <input type="password" name="password" placeholder="password" required>
+                        <button type="submit" class="btn">create</button>
+                    </div>
+                </form>
+                
+                {{if .error}}
+                <div class="error">
+                    {{if eq .error "missing"}}All fields required{{end}}
+                    {{if eq .error "exists"}}User already exists{{end}}
+                    {{if eq .error "server"}}Server error{{end}}
+                </div>
+                {{end}}
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="user-info">
+                <div class="label">join the</div>
+                <div class="title">Community</div>
+                <div class="subtitle">create your account</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

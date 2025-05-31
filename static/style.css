@@ -1,0 +1,612 @@
+/* General Resets and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0; /* Force sharp corners by default */
+}
+
+:root {
+    --font-family-monospace: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    --bg-dark: #000000; /* True black for right panel */
+    --bg-light-panel: #f0f0f0; /* Light gray for left panel overall */
+    --bg-light-content: #ffffff; /* White for content boxes like forms, cards */
+    --text-dark: #000000;
+    --text-light: #ffffff;
+    --border-color: #000000;
+    --border-width: 1px; /* Changed from 2px for a slightly crisper look, adjust if needed */
+    --border-width-strong: 2px;
+    --danger-color: #cc0000; /* For delete buttons */
+    --danger-text: #ffffff;
+}
+
+body {
+    font-family: var(--font-family-monospace);
+    background: var(--bg-dark); /* Base background */
+    color: var(--text-light);
+    height: 100vh;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    border: var(--border-width-strong) solid var(--border-color); /* Outer screen border */
+    /* border-radius: 10px; */
+    overflow: hidden; /* To make inner border-radius work if used */
+}
+
+.left-panel {
+    width: 50%;
+    background: var(--bg-light-panel);
+    color: var(--text-dark);
+    padding: 0; /* Padding will be on inner elements */
+    overflow-y: auto;
+    border-right: var(--border-width-strong) solid var(--border-color);
+}
+
+.right-panel {
+    width: 50%;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    padding: 40px;
+    display: flex;
+    flex-direction: column; /* To stack label and username */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Tabs (Login/Signup) */
+.tabs {
+    display: flex;
+    margin: 0;
+    border-bottom: var(--border-width-strong) solid var(--border-color);
+}
+
+.tab {
+    padding: 12px 20px;
+    background: var(--bg-light-panel);
+    color: var(--text-dark);
+    cursor: pointer;
+    font-size: 13px;
+    border: none; /* Border is on .tabs container */
+    border-right: var(--border-width-strong) solid var(--border-color);
+    flex: 1;
+    text-align: center;
+    font-family: inherit;
+    text-transform: uppercase; /* As seen in "log in" "sign up" */
+}
+.tab:last-child {
+    border-right: none;
+}
+
+.tab.active {
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.tab:hover:not(.active) {
+    background: #d0d0d0; /* Slightly darker for hover */
+}
+
+/* Forms (Login, Signup, Modal Forms) */
+.form-container {
+    padding: 25px; /* Adjusted padding */
+    background: var(--bg-light-content); /* Content background */
+    border: var(--border-width-strong) solid var(--border-color);
+    margin: 20px; /* Add margin to separate from panel edges if needed */
+}
+
+/* For login specific "log in" title */
+.form-title {
+    font-size: 13px; /* Matches other text */
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    border-bottom: var(--border-width) solid var(--border-color);
+    display: block;
+    text-transform: uppercase;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: normal;
+    margin-bottom: 8px; /* Space between label and input */
+    font-size: 13px;
+    padding-bottom: 5px;
+    border-bottom: var(--border-width) solid var(--border-color);
+    margin-bottom: 12px; /* Increased space after label */
+    text-transform: uppercase;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 8px 10px; /* Adjusted padding */
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    color: var(--text-dark);
+}
+
+.form-group input:focus {
+    background: #f8f8f8; /* Slightly different for focus */
+}
+
+.btn {
+    padding: 8px 15px; /* Adjusted padding */
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    display: inline-block; /* To respect padding and borders */
+}
+
+.btn:hover {
+    background: var(--border-color);
+    color: var(--text-light);
+}
+
+/* Dashboard */
+.header { /* For dashboard header containing logout */
+    padding: 15px 20px;
+    border-bottom: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-panel);
+    display: flex;
+    justify-content: flex-end; /* To push logout to the right */
+    align-items: center;
+}
+
+.logout-btn {
+    padding: 6px 12px;
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-dark);
+    text-transform: uppercase;
+}
+
+.logout-btn:hover {
+    background: var(--border-color);
+    color: var(--text-light);
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0; /* No gap, borders will touch */
+    padding: 0;
+    /* The grid itself can be bordered if it's a distinct section */
+    border-top: var(--border-width-strong) solid var(--border-color);
+    border-left: var(--border-width-strong) solid var(--border-color);
+}
+
+.room-card {
+    border-right: var(--border-width-strong) solid var(--border-color);
+    border-bottom: var(--border-width-strong) solid var(--border-color);
+    padding: 20px; /* Adjusted padding */
+    background: var(--bg-light-content);
+    cursor: pointer;
+    text-align: center;
+    min-height: 90px; /* Adjusted height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-card:hover {
+    background: #e8e8e8; /* Slightly darker for hover */
+}
+
+.room-card.create-new {
+    /* border-style: dashed;  The image shows solid border */
+}
+
+.plus {
+    font-size: 30px; /* Large plus icon */
+    font-weight: normal;
+    color: var(--text-dark);
+    line-height: 1;
+}
+
+.room-name {
+    font-weight: normal;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+.room-code {
+    font-size: 11px; /* Slightly smaller */
+    color: #555; /* Dimmer color for code */
+}
+
+/* Right panel user info (Dashboard) */
+.user-info {
+    text-align: center;
+    color: var(--text-light);
+}
+
+.label { /* "user" label */
+    font-size: 12px; /* Smaller */
+    margin-bottom: 8px;
+    opacity: 0.7; /* Dimmer */
+    text-transform: uppercase;
+}
+
+.username { /* "Viktor Ahmeti" */
+    font-size: 22px; /* Larger */
+    font-weight: normal;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: normal;
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Modal (Create Room / Join Room) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7); /* Dim overlay */
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 25%; /* Centered in the left panel conceptually */
+    transform: translate(-50%, -50%); /* Adjust if left is 0 for full screen modal */
+    background: var(--bg-light-panel); /* Panel background for modal */
+    border: var(--border-width-strong) solid var(--border-color);
+    width: 350px; /* Adjusted width */
+    color: var(--text-dark);
+}
+
+.modal .tabs { /* Tabs inside modal */
+    margin: 0;
+    border-bottom: var(--border-width-strong) solid var(--border-color);
+}
+.modal .tab {
+    border-right: var(--border-width-strong) solid var(--border-color);
+}
+.modal .tab:last-child {
+    border-right: none;
+}
+
+.modal .form-container { /* Form container inside modal */
+    padding: 20px;
+    margin: 0; /* No extra margin inside modal */
+    border: none; /* Modal content has border */
+    background: var(--bg-light-content); /* White for form area */
+}
+
+.modal input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 13px;
+}
+
+/* Chat Room */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--bg-light-panel);
+    border-bottom: var(--border-width-strong) solid var(--border-color);
+}
+
+.room-title { /* Chat room name [code] */
+    font-weight: normal;
+    font-size: 13px;
+}
+
+.back-btn {
+    padding: 6px 10px;
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-dark);
+    text-transform: uppercase;
+}
+
+.back-btn:hover {
+    background: var(--border-color);
+    color: var(--text-light);
+}
+
+.chat-container {
+    height: calc(100vh - 53px);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background: var(--bg-light-panel);
+}
+
+.messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: var(--bg-light-content);
+    border: var(--border-width-strong) solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+.message {
+    margin-bottom: 12px;
+    padding: 8px;
+    border: var(--border-width) solid var(--border-color);
+}
+
+.message-header {
+    font-size: 11px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    color: #333;
+}
+
+.message-content {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+
+.message-time {
+    color: #666;
+}
+
+.message.system-message {
+    border-color: #aaa;
+}
+
+.message.system-message .message-content {
+    font-style: italic;
+    color: #555;
+    font-size: 12px;
+}
+
+.message-input {
+    display: flex;
+    background: var(--bg-light-content);
+    border: var(--border-width-strong) solid var(--border-color);
+}
+
+.message-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    color: var(--text-dark);
+}
+
+.message-input button {
+    padding: 10px 15px;
+    border: none;
+    border-left: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background: #333;
+}
+
+/* Settings Modal */
+#settingsModal .modal-content {
+    width: 450px;
+}
+
+.settings-section {
+    margin-bottom: 25px;
+}
+
+.settings-section-title {
+    display: block;
+    font-size: 13px;
+    padding-bottom: 5px;
+    border-bottom: var(--border-width) solid var(--border-color);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.settings-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.settings-form-group label {
+    width: 80px;
+    font-size: 13px;
+    padding-right: 10px;
+    text-transform: uppercase;
+}
+
+.settings-form-group input {
+    flex: 1;
+    padding: 8px 10px;
+    border: var(--border-width-strong) solid var(--border-color);
+    background: var(--bg-light-content);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    color: var(--text-dark);
+}
+
+#settingsModal input[readonly] {
+    background: var(--bg-dark) !important;
+    color: var(--text-light) !important;
+    border-color: var(--border-color) !important;
+}
+
+.members-list {
+    border: var(--border-width-strong) solid var(--border-color);
+    padding: 10px;
+    background: var(--bg-light-content);
+    max-height: 100px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.members-list div {
+    margin-bottom: 3px;
+    padding: 3px 0;
+}
+
+.btn-danger {
+    background: var(--danger-color) !important;
+    color: var(--danger-text) !important;
+    border-color: var(--danger-color) !important;
+    margin-top: 15px;
+}
+
+.btn-danger:hover {
+    background: #a00000 !important;
+    border-color: #a00000 !important;
+}
+
+/* Connection status */
+.connection-status {
+    padding: 5px 10px;
+    margin: 10px 15px 0;
+    border: var(--border-width) solid;
+    font-size: 11px;
+    text-align: center;
+    background: var(--bg-light-content);
+}
+
+.connection-status.success { background: #e8f5e8; border-color: #4caf50; color: #2e7d32; }
+.connection-status.error   { background: #ffebee; border-color: #f44336; color: #c62828; }
+.connection-status.warning { background: #fff3e0; border-color: #ff9800; color: #ef6c00; }
+
+#connectionStatus {
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
+.connection-status-success { color: #4caf50 !important; }
+.connection-status-error   { color: #f44336 !important; }
+.connection-status-warning { color: #ff9800 !important; }
+
+/* Error/Success messages */
+.error {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 8px;
+    border: var(--border-width-strong) solid var(--danger-color);
+    background: #fdd;
+}
+
+.success {
+    color: #155724;
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 8px;
+    border: var(--border-width-strong) solid #28a745;
+    background: #d4edda;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #333;
+    border: var(--border-width) solid var(--border-color);
+}
+::-webkit-scrollbar-thumb {
+    background: #666;
+    border: var(--border-width) solid var(--border-color);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.left-panel::-webkit-scrollbar-track {
+    background: #d0d0d0;
+    border-color: #b0b0b0;
+}
+.left-panel::-webkit-scrollbar-thumb {
+    background: #a0a0a0;
+    border-color: #888;
+}
+.left-panel::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .container {
+        flex-direction: column;
+        border: none;
+    }
+    .left-panel, .right-panel {
+        width: 100%;
+        height: 50vh;
+        border-right: none;
+        border-bottom: var(--border-width-strong) solid var(--border-color);
+    }
+    .right-panel {
+        border-bottom: none;
+    }
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+    .modal-content {
+        width: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .settings-form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .settings-form-group label {
+        width: auto;
+        margin-bottom: 5px;
+    }
+}

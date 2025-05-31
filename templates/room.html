@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.chatroom.Name}} - Chatroom</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="chat-header">
+                <div class="room-title">{{.chatroom.Name}} [{{.chatroom.Code}}]</div>
+                <a href="/dashboard" class="back-btn">back to dashboard</a>
+            </div>
+            
+            <div class="chat-container">
+                <div id="messages" class="messages">
+                    {{range .messages}}
+                    <div class="message">
+                        <div class="message-header">
+                            {{.User.Username}}
+                            <span class="message-time">{{.CreatedAt.Format "15:04"}}</span>
+                        </div>
+                        <div class="message-content">{{.Content}}</div>
+                    </div>
+                    {{end}}
+                </div>
+                
+                <div class="message-input">
+                    <input type="text" id="messageInput" placeholder="Enter some text" maxlength="500">
+                    <button onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="user-info">
+                <div class="label">user</div>
+                <div class="username">{{.user.Username}}</div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="label">room info</div>
+                    <div style="font-size: 14px; margin-top: 10px;">
+                        <div>Code: {{.chatroom.Code}}</div>
+                        <div>Owner: {{.chatroom.Owner.Username}}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="label">status</div>
+                    <div id="connectionStatus" style="font-size: 12px; margin-top: 5px;">
+                        Connecting...
+                    </div>
+                </div>
+                
+                {{if eq .chatroom.OwnerID .user.ID}}
+                <div style="margin-top: 30px;">
+                    <button onclick="showSettings()" class="btn">⚙ Settings</button>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal (for room owners) -->
+    {{if eq .chatroom.OwnerID .user.ID}}
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="tabs">
+                <div class="tab active">Settings</div>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <label style="font-weight: bold; margin-bottom: 10px; display: block;">info</label>
+                <div style="margin-bottom: 10px;">
+                    <label>code:</label>
+                    <input type="text" value="{{.chatroom.Code}}" readonly style="background: #000; color: #fff;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label>name:</label>
+                    <input type="text" id="roomNameEdit" value="{{.chatroom.Name}}">
+                </div>
+                <button onclick="updateRoom()" class="btn">save</button>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <label style="font-weight: bold; margin-bottom: 10px; display: block;">members</label>
+                <div class="members-list" style="border: 1px solid #000; padding: 10px; background: #fff; max-height: 150px; overflow-y: auto;">
+                    <div>Loading members...</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button onclick="deleteRoom()" style="background: #ff0000; color: #fff; border: 1px solid #ff0000;" class="btn">delete this chatroom</button>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <script src="/static/app.js"></script>
+    <script>
+        // Debug: Check if WebSocket is initializing
+        console.log('Room page loaded, current URL:', window.location.pathname);
+        
+        // Force initialize chat when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts[1] === 'room' && pathParts[2]) {
+                const code = pathParts[2];
+                console.log('Initializing chat for room:', code);
+                initializeChat(code);
+            } else {
+                console.log('Not a room page or no room code found');
+                updateConnectionStatus('Invalid room', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.chatroom.Name}} - Chatroom</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="chat-header">
+                <div class="room-title">{{.chatroom.Name}} [{{.chatroom.Code}}]</div>
+                <a href="/dashboard" class="back-btn">back to dashboard</a>
+            </div>
+            
+            <div class="chat-container">
+                <div id="messages" class="messages">
+                    {{range .messages}}
+                    <div class="message">
+                        <div class="message-header">
+                            {{.User.Username}}
+                            <span class="message-time">{{.CreatedAt.Format "15:04"}}</span>
+                        </div>
+                        <div class="message-content">{{.Content}}</div>
+                    </div>
+                    {{end}}
+                </div>
+                
+                <div class="message-input">
+                    <input type="text" id="messageInput" placeholder="Enter some text" maxlength="500">
+                    <button onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="user-info">
+                <div class="label">user</div>
+                <div class="username">{{.user.Username}}</div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="label">room info</div>
+                    <div style="font-size: 14px; margin-top: 10px;">
+                        <div>Code: {{.chatroom.Code}}</div>
+                        <div>Owner: {{.chatroom.Owner.Username}}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <div class="label">status</div>
+                    <div id="connectionStatus" style="font-size: 12px; margin-top: 5px;">
+                        Connecting...
+                    </div>
+                </div>
+                
+                {{if eq .chatroom.OwnerID .user.ID}}
+                <div style="margin-top: 30px;">
+                    <button onclick="showSettings()" class="btn">⚙ Settings</button>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

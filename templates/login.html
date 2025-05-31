@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom - Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                <div class="tab active">log in</div>
+                <div class="tab" onclick="window.location.href='/signup'">sign up</div>
+            </div>
+            
+            <div class="form-container">
+                <form method="POST" action="/login">
+                    <div class="form-group">
+                        <label>log in</label>
+                        <input type="text" name="email" placeholder="email or username" required>
+                        <input type="password" name="password" placeholder="password" required>
+                        <button type="submit" class="btn">go</button>
+                    </div>
+                </form>
+                
+                {{if .error}}
+                <div class="error">
+                    {{if eq .error "invalid"}}Invalid credentials{{end}}
+                    {{if eq .error "server"}}Server error{{end}}
+                </div>
+                {{end}}
+                
+                {{if eq .success "created"}}
+                <div class="success">Account created! Please log in.</div>
+                {{end}}
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="user-info">
+                <div class="label">welcome to</div>
+                <div class="title">Chatroom</div>
+                <div class="subtitle">secure messaging platform</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
